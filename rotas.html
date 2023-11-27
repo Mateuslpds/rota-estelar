@@ -6,15 +6,18 @@
     <title>Joguinho</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    
+    <div class="score-container">
+        <h1>Pontuação: <p id="score">0</p></h1>
+        <h1>Movimentos: <p id="moves">0</p></h1>
+        <h1>Movimentos Necessários: <p id="moves-objective"></p></h1>
+    </div>
+
     <!-- Adição do container do grafo -->
     <div id="graph-container"></div>
   
     <!-- Adição do botão -->
-    <button class="startButton" id="startButton">Start Animation</button>
+    <button class="startButton" id="startButton">Start Game</button>
 
     <!-- Adição do script -->
     <script src="script.js"></script>

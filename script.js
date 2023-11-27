@@ -14,7 +14,9 @@ function startMeteorShower() {
 };
 
 let moves = 0;
+let score = 0;
 let movesObjective;
+let gameInProgress = false;
 let randomPlayerPosition = getRandomVertex();
 let randomFinishPosition = getRandomVertex();
 
@@ -23,13 +25,11 @@ while (randomPlayerPosition === randomFinishPosition || randomPlayerPosition ===
     randomFinishPosition = getRandomVertex();
 }
 
-
-
 class Graph {
     constructor(noOfVertices) {
         this.noOfVertices = noOfVertices;
         this.AdjList = new Map();
-        this.playerPosition = randomPlayerPosition; // Inicia o jogador no nó 1
+        this.playerPosition = randomPlayerPosition;
     }
 
     addVertex(v) {
@@ -80,9 +80,10 @@ class Graph {
                 updatePlayerPosition();
             } else {
                 if (moves + 1 == movesObjective) {
-                    alert(`Você venceu em ${moves + 1} movimentos!`);
+                    gameInProgress = false;
                 } else {
-                    alert(`Você perdeu!`);
+                    alert(`Você perdeu! Sua pontuação foi de ${score} pontos.`);
+                    location.reload();
                 }
             }
         }
@@ -124,7 +125,6 @@ for (var i = 0; i < vertices.length; i++) {
     g.addVertex(vertices[i]);
 }
 
-/*
 for(var i = 1; i <= 25; i++) {
     if (i % 5 !== 0) {
         g.addEdge(i, i + 1);
@@ -134,8 +134,8 @@ for(var i = 1; i <= 25; i++) {
         g.addEdge(i, i + 5);
     }
 }
-*/
 
+/*
 g.addEdge(1, 2);
 g.addEdge(1, 6);
 g.addEdge(2, 3);
@@ -176,6 +176,7 @@ g.addEdge(21, 22);
 g.addEdge(22, 23);
 g.addEdge(23, 24);
 g.addEdge(24, 25);
+*/
 
 g.printGraph();
 
@@ -210,12 +211,44 @@ movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMove
 
 if ((randomPlayerPosition + randomFinishPosition) % 2 == 0) {
     while (movesObjective % 2 !== 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
-    alert("Você precisa fazer " + movesObjective + " movimentos para vencer!");
     console.log("Par: " + movesObjective);
 } else {
     while (movesObjective % 2 == 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
-    alert("Você precisa fazer " + movesObjective + " movimentos para vencer!");
     console.log("Ímpar: " + movesObjective);
+}
+
+document.getElementById('moves-objective').innerText = movesObjective;
+
+function updateGameStatus() {
+    const oldObjectiveNode = document.querySelector('.finish-node');
+    oldObjectiveNode.classList.remove('finish-node');
+
+    // Atualiza o objetivo do jogo
+    randomFinishPosition = getRandomVertex();
+    while (randomPlayerPosition === randomFinishPosition || randomPlayerPosition === randomFinishPosition - 5 || randomPlayerPosition === randomFinishPosition - 1 || randomPlayerPosition === randomFinishPosition + 1 || randomPlayerPosition === randomFinishPosition + 5) {
+        randomFinishPosition = getRandomVertex();
+    }
+
+    // Adiciona a classe objective-node ao novo quadrado do objetivo
+    const newObjectiveNode = document.querySelector(`.graph-node[data-vertex="${randomFinishPosition}"]`);
+    newObjectiveNode.classList.add('finish-node');
+
+    // Atualiza a quantidade de movimentos
+    moves = 0;
+
+    movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
+
+    // Atualiza a pontuação
+    score++;
+
+    // Atualiza a mensagem na interface
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById('score').innerText = score;
+    document.getElementById('moves').innerText = moves;
+    document.getElementById('moves-objective').innerText = movesObjective;
 }
 
 // Adiciona o jogador no nó inicial
@@ -249,14 +282,23 @@ function movePlayerAlongPath(path) {
     moveStep(0);
 }
 
+setInterval(myTimer, 500);
+
 // Função para lidar com o clique no nó
 function myTimer() {
-    const shortestPath = g.findShortestPath(g.playerPosition, randomFinishPosition);
+    if(gameInProgress){
+        const shortestPath = g.findShortestPath(g.playerPosition, randomFinishPosition);
 
-    if (shortestPath) {
-        g.movePlayer(shortestPath[1]);
-        updatePlayerPosition();
-        movePlayerAlongPath(shortestPath);
+        if (shortestPath) {
+            g.movePlayer(shortestPath[1]);
+            updatePlayerPosition();
+            movePlayerAlongPath(shortestPath);
+
+            // Verifica se o jogador venceu
+            if (g.isFinish(g.playerPosition)) {
+                updateGameStatus();
+            }
+        }
     }
 }
 
@@ -269,6 +311,7 @@ function updatePlayerPosition() {
             node.classList.add('player-node');
         }
     }
+    document.getElementById('moves').innerText = moves+1;
 }
 
 function handleNodeClick(vertex) {
@@ -289,5 +332,5 @@ startButton.addEventListener('click', startAnimation);
 
 // Função para iniciar a animação
 function startAnimation() {
-    setInterval(myTimer, 500);
+    gameInProgress = true;
 }

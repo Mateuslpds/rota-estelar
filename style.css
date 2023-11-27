@@ -11,6 +11,13 @@ body {
     font-family: 'Arial', sans-serif; /* Escolha uma fonte adequada */
 }
 
+.score-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
+}
+
 #graph-container {
     display: grid;
     grid-template-columns: repeat(5, 100px);
