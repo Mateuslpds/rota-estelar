@@ -1,3 +1,18 @@
+function startMeteorShower() {
+    const meteorShowerContainer = document.getElementById('graph-container');
+
+    for (let i = 0; i < 11; i++) {
+        const meteor = document.createElement('div');
+        meteor.className = 'meteor';
+        meteor.style.left = Math.random() * 100 + 'vw';
+        meteorShowerContainer.appendChild(meteor);
+    }
+}
+   // Iniciar automaticamente quando a página for carregada
+   window.onload = function () {
+    startMeteorShower();
+};
+
 let moves = 0;
 let movesObjective;
 let randomPlayerPosition = getRandomVertex();

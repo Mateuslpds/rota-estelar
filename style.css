@@ -1,10 +1,14 @@
 /* Estilo básico para o grid e os nós */
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-color: #000; /* Cor de fundo escura para simular o espaço */
+    color: #fff; /* Cor do texto */
+    font-family: 'Arial', sans-serif; /* Escolha uma fonte adequada */
 }
 
 #graph-container {
@@ -16,22 +20,23 @@ body {
 .graph-node {
     width: 100px;
     height: 100px;
-    border: 1px solid #000;
+    border: 1px solid #333; /* Borda escura para os nós */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
+    background-color: #111; /* Cor de fundo dos nós */
 }
 
 .finish-node {
-    background-color: green;
-    color: white;
+    background-color: #00ff00; /* Verde para o nó final */
+    color: #fff;
 }
 
 .player-node {
-    background-color: blue;
-    color: white;
+    background-color: #0066cc; /* Azul para o nó do jogador */
+    color: #fff;
 }
 
 .player {
@@ -45,9 +50,37 @@ body {
 }
 
 .graph-node.blocked-node {
-    background-color: gray;
-    color: white;
-    /* Adicione esta linha se quiser manter o texto visível */
+    background-color: #666; /* Cinza para nós bloqueados */
+    color: #fff;
+}
+
+.startButton {
+    background-color: #00ff00;
+    padding: 15px 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.startButton:hover {
+    background-color: #00cc00;
+}
+
+.meteor {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    animation: fall 2s linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
 }
 
 @keyframes movePlayer {
