@@ -15,13 +15,29 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 50%;
+    width: 40%;
 }
 
 #graph-container {
     display: grid;
     grid-template-columns: repeat(5, 100px);
     grid-gap: 10px;
+}
+
+.finish-node {
+    background: url('portal.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+}
+
+.player-node {
+    background: url('nave.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
 }
 
 .graph-node {
@@ -36,15 +52,7 @@ body {
     background-color: #111; /* Cor de fundo dos nós */
 }
 
-.finish-node {
-    background-color: #00ff00; /* Verde para o nó final */
-    color: #fff;
-}
 
-.player-node {
-    background-color: #0066cc; /* Azul para o nó do jogador */
-    color: #fff;
-}
 
 .player {
     position: absolute;
