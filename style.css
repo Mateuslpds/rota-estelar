@@ -92,6 +92,14 @@ body {
     animation: fall 2s linear infinite;
 }
 
+.rotaestelar {
+    color: #ffffff; /* Cor do texto (branco) */
+    text-shadow: 2px 2px 4px greenyellow; /* Sombra do texto para dar destaque */
+    font-family: 'Arial', sans-serif; /* Escolha a fonte desejada para o título */
+    padding: 10px; /* Espaçamento interno para dar um pouco de espaço ao redor do texto */
+    border-radius: 8px; /* Borda arredondada para um visual mais suave */
+}
+
 @keyframes fall {
     to {
         transform: translateY(100vh);
