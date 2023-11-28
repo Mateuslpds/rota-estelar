@@ -23,7 +23,6 @@ class Graph {
     addEdge(v, w) {
         this.AdjList.get(v).push(w);
         this.AdjList.get(w).push(v);
-        console.log("Entrou no addEdge");
     }
 
     removeEdge(v, w) {
@@ -36,19 +35,6 @@ class Graph {
 
         if (wIndex !== -1) {
             this.AdjList.set(w, this.AdjList.get(w).filter(neighbor => neighbor !== v));
-        }
-
-        g.printGraph();
-    }
-
-    printGraph() {
-        var get_keys = this.AdjList.keys();
-        for (var i of get_keys) {
-            var get_values = this.AdjList.get(i);
-            var conc = "";
-            for (var j of get_values)
-                conc += j + " ";
-            console.log(i + " -> " + conc);
         }
     }
 
@@ -96,10 +82,6 @@ class Graph {
     }
 }
 
-function getRandomVertex() {
-    return Math.floor(Math.random() * 25) + 1;
-}
-
 var g = new Graph(25);
 var vertices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
 
@@ -116,8 +98,6 @@ for(var i = 1; i <= 25; i++) {
         g.addEdge(i, i + 5);
     }
 }
-
-g.printGraph();
 
 const graphContainer = document.getElementById('graph-container');
 
@@ -145,13 +125,15 @@ movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMove
 
 if ((randomPlayerPosition + randomFinishPosition) % 2 == 0) {
     while (movesObjective % 2 !== 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
-    console.log("Par: " + movesObjective);
 } else {
     while (movesObjective % 2 == 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
-    console.log("Ímpar: " + movesObjective);
 }
 
 document.getElementById('moves-objective').innerText = movesObjective;
+
+function getRandomVertex() {
+    return Math.floor(Math.random() * 25) + 1;
+}
 
 function updateGameStatus() {
     const oldObjectiveNode = document.querySelector('.finish-node');
@@ -168,6 +150,12 @@ function updateGameStatus() {
     moves = 0;
 
     movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
+
+    if ((randomPlayerPosition + randomFinishPosition) % 2 == 0) {
+        while (movesObjective % 2 !== 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
+    } else {
+        while (movesObjective % 2 == 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
+    }
 
     score++;
 
@@ -206,7 +194,6 @@ function movePlayerAlongPath(path) {
         }
     }
     moves++
-    console.log(moves);
     moveStep(0);
 }
 
@@ -244,8 +231,6 @@ function handleNodeClick(vertex) {
 
     if (clickedNode.classList.contains('blocked-node')) {
         clickedNode.classList.remove('blocked-node');
-        //copilot, print adjacency list of that vertex for me
-        console.log(g.AdjList.get(vertex));
 
         if (vertex - 5 > 0 && !g.AdjList.get(vertex).includes(vertex - 5)) g.addEdge(vertex, vertex - 5);
         if (vertex - 1 > 0 && (vertex - 1) % 5 != 0 && !g.AdjList.get(vertex).includes(vertex - 1)) g.addEdge(vertex, vertex - 1);
