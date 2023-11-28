@@ -118,7 +118,7 @@ vertices.forEach(vertex => {
 
 const shortestPathLength = g.findShortestPath(randomPlayerPosition, randomFinishPosition).length - 1;
 
-const minMoves = shortestPathLength;
+let minMoves = shortestPathLength;
 const maxMoves = 14;
 
 movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
@@ -136,22 +136,28 @@ function getRandomVertex() {
 }
 
 function updateGameStatus() {
-    const oldObjectiveNode = document.querySelector('.finish-node');
+    let oldObjectiveNode = document.querySelector('.finish-node');
     oldObjectiveNode.classList.remove('finish-node');
 
     randomFinishPosition = getRandomVertex();
-    while (randomPlayerPosition === randomFinishPosition || randomPlayerPosition === randomFinishPosition - 5 || randomPlayerPosition === randomFinishPosition - 1 || randomPlayerPosition === randomFinishPosition + 1 || randomPlayerPosition === randomFinishPosition + 5) {
+    while (g.playerPosition === randomFinishPosition
+        || g.playerPosition === randomFinishPosition - 5 || g.playerPosition === randomFinishPosition - 1
+        || g.playerPosition === randomFinishPosition + 1 || g.playerPosition === randomFinishPosition + 5) {
         randomFinishPosition = getRandomVertex();
     }
 
-    const newObjectiveNode = document.querySelector(`.graph-node[data-vertex="${randomFinishPosition}"]`);
+    let newObjectiveNode = document.querySelector(`.graph-node[data-vertex="${randomFinishPosition}"]`);
     newObjectiveNode.classList.add('finish-node');
 
     moves = 0;
 
+    let shortestPathLength = g.findShortestPath(g.playerPosition, randomFinishPosition).length - 1;
+
+    minMoves = shortestPathLength;
+
     movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
 
-    if ((randomPlayerPosition + randomFinishPosition) % 2 == 0) {
+    if ((g.playerPosition + randomFinishPosition) % 2 == 0) {
         while (movesObjective % 2 !== 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
     } else {
         while (movesObjective % 2 == 0) movesObjective = Math.floor(Math.random() * (maxMoves - minMoves + 1)) + minMoves;
